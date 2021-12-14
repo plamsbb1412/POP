@@ -24,8 +24,26 @@ class _LoginState extends State<Login> {
           buildUser(size),
           buildPassword(size),
           buildLogin(size),
+          buildCreateAccount(),
         ],
       ),
+    );
+  }
+
+  Row buildCreateAccount() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ShowTitle(
+          title: 'ไม่มีบัญชีผู้ใช้ ?',
+          textStyle: MyConstant().h3Style(),
+        ),
+        TextButton(
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.routeChooseAccount),
+          child: Text('สร้างบัญชีผู้ใช้'),
+        ),
+      ],
     );
   }
 
@@ -34,10 +52,11 @@ class _LoginState extends State<Login> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
+          margin: EdgeInsets.symmetric(vertical: 16),
           width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle(),
-            onPressed: () {},
+            onPressed: () => {},
             child: Text('Login'),
           ),
         ),
@@ -140,7 +159,7 @@ class _LoginState extends State<Login> {
       children: [
         Container(
           width: size * 0.6,
-          child: ShowImage(path: MyConstant.image1),
+          child: ShowImage(path: MyConstant.imageLogo),
         ),
       ],
     );

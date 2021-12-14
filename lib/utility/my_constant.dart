@@ -10,12 +10,13 @@ class MyConstant {
   static String routeSaler = '/userService';
   static String routeChooseAccount = '/chooseAccount';
   //////////////// Create Account /////////////////////////
-  static String routeCreateUser = '/createSaler';
-  static String routeCreateSaler = '/createUser';
+  static String routeCreateUser = '/createUser';
+  static String routeCreateSaler = '/createSaler';
   /////////////////////////////////////////////////////////
 
   // image
-  static String image1 = 'images/logoApp.png';
+  static String imageLogo = 'images/logoApp.png';
+  static String imageavatar = 'images/avatar.png';
 
   // Color
   static Color primary = Color(0xffC08960);
