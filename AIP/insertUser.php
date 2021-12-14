@@ -41,7 +41,7 @@ if (isset($_GET)) {
 			echo "false";
 		}
 
-	} else echo "Welcome Master UNG";
+	} else echo "Welcome Kimochiii";
    
 }
 	mysqli_close($link);
