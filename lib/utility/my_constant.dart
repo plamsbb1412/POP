@@ -6,8 +6,8 @@ class MyConstant {
   static String domain = 'https://949f-49-231-193-61.ngrok.io';
   // Route
   static String routeLogin = '/login';
-  static String routeUser = '/salerService';
-  static String routeSaler = '/userService';
+  static String routeUserService = '/userService';
+  static String routeSalerService = '/salerService';
   static String routeChooseAccount = '/chooseAccount';
   //////////////// Create Account /////////////////////////
   static String routeCreateUser = '/createUser';

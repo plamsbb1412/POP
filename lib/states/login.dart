@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
 import 'package:flutter_application_1/utility/my_dialog.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
@@ -91,7 +92,31 @@ class _LoginState extends State<Login> {
         MyDialog().normalDialog(context, 'ไม่มีผู้ใช้นี้ในระบบ',
             'ไม่มี $user ในระบบโปรดู username แล้วลองใหม่');
       } else {
-        for (var item in json.decode(value.data)) {}
+        for (var item in json.decode(value.data)) {
+          UserModel model = UserModel.fromMap(item);
+          if (password == model.password) {
+            // Success Login
+            String type = model.type;
+            print('## Login type == $type');
+            switch (type) {
+              case 'store':
+                Navigator.pushAndRemoveUntil(
+                    context, MyConstant.routeSalerService, (route) => false);
+
+                break;
+              case 'store':
+                Navigator.pushAndRemoveUntil(
+                    context, MyConstant.routeUserService, (route) => false);
+
+                break;
+              default:
+            }
+          } else {
+            // login False
+            MyDialog().normalDialog(
+                context, 'Password ผิด', 'Password ของคุณผิดกรุณาลองใหม่');
+          }
+        }
       }
     });
   }
