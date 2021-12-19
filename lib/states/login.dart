@@ -100,12 +100,12 @@ class _LoginState extends State<Login> {
             print('## Login type == $type');
             switch (type) {
               case 'store':
-                Navigator.pushAndRemoveUntil(
+                Navigator.pushNamedAndRemoveUntil(
                     context, MyConstant.routeSalerService, (route) => false);
 
                 break;
-              case 'store':
-                Navigator.pushAndRemoveUntil(
+              case 'user':
+                Navigator.pushNamedAndRemoveUntil(
                     context, MyConstant.routeUserService, (route) => false);
 
                 break;
