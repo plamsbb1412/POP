@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
+import 'package:flutter_application_1/utility/my_dialog.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
 
@@ -12,20 +16,27 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool statusRedEye = true;
+  final formKey = GlobalKey<FormState>();
+  TextEditingController userController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: ListView(
-        children: [
-          buildImage(size),
-          buildAppName(),
-          buildUser(size),
-          buildPassword(size),
-          buildLogin(size),
-          buildCreateAccount(),
-        ],
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        behavior: HitTestBehavior.opaque,
+        child: ListView(
+          children: [
+            buildImage(size),
+            buildAppName(),
+            buildUser(size),
+            buildPassword(size),
+            buildLogin(size),
+            buildCreateAccount(),
+          ],
+        ),
       ),
     );
   }
@@ -56,12 +67,33 @@ class _LoginState extends State<Login> {
           width: size * 0.6,
           child: ElevatedButton(
             style: MyConstant().myButtonStyle(),
-            onPressed: () => {},
+            onPressed: () {
+              if (formKey.currentState!.validate()) {
+                String user = userController.text;
+                String password = passwordController.text;
+                print('## user = $user ,password= $password ##');
+                checkAuthen(user: user, password: password);
+              }
+            },
             child: Text('Login'),
           ),
         ),
       ],
     );
+  }
+
+  Future<Null> checkAuthen({String? user, String? password}) async {
+    String apiCheckAuthen =
+        '{$MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$user';
+    await Dio().get(apiCheckAuthen).then((value) {
+      print('#### value for API=====>>> $value');
+      if (value.toString() == 'null') {
+        MyDialog().normalDialog(context, 'ไม่มีผู้ใช้นี้ในระบบ',
+            'ไม่มี $user ในระบบโปรดู username แล้วลองใหม่');
+      } else {
+        for (var item in json.decode(value.data)) {}
+      }
+    });
   }
 
   Row buildUser(double size) {
@@ -72,6 +104,14 @@ class _LoginState extends State<Login> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: userController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก username';
+              } else {
+                return null;
+              }
+            },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
               labelText: 'User :',
@@ -102,6 +142,14 @@ class _LoginState extends State<Login> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: passwordController,
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'กรุณากรอก password';
+              } else {
+                return null;
+              }
+            },
             obscureText: statusRedEye,
             decoration: InputDecoration(
               suffixIcon: IconButton(

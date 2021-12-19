@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'dart:math';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
 import 'package:flutter_application_1/utility/my_dialog.dart';
@@ -16,8 +17,18 @@ class CreateUser extends StatefulWidget {
 
 class _CreateUserState extends State<CreateUser> {
   String? sex;
+  String avatar = '';
   File? file;
   final formKey = GlobalKey<FormState>();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController firstnameController = TextEditingController();
+  TextEditingController lastnameController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+  TextEditingController studentIDController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double size = MediaQuery.of(context).size.width;
@@ -33,6 +44,7 @@ class _CreateUserState extends State<CreateUser> {
                         context, 'ยังไม่ได้เลือกเพส', 'กรุณาเลือก เพส ของคุณ');
                   } else {
                     print('Process Sex Type User');
+                    uploadPictureAndInsertData();
                   }
                 }
               },
@@ -43,30 +55,113 @@ class _CreateUserState extends State<CreateUser> {
       ),
       body: Form(
         key: formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildTildTitle('username และ password  '),
-              buildUser(size),
-              buildPassword(size),
-              buildTildTitle('ข้อมูลทั่วไป '),
-              buildFirstName(size),
-              buildLastName(size),
-              buildName(size),
-              buildStudentID(size),
-              buildEmail(size),
-              buildPhone(size),
-              buildTildTitle('เพส  '),
-              buildRadioMan(size),
-              buildRadiofemale(size),
-              buildTildTitle('รูปภาพ'),
-              buildSubTitle(),
-              buildAvater(size),
-            ],
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+          behavior: HitTestBehavior.opaque,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildTildTitle('username และ password  '),
+                buildUser(size),
+                buildPassword(size),
+                buildTildTitle('ข้อมูลทั่วไป '),
+                buildFirstName(size),
+                buildLastName(size),
+                buildName(size),
+                buildStudentID(size),
+                buildEmail(size),
+                buildPhone(size),
+                buildTildTitle('เพส  '),
+                buildRadioMan(size),
+                buildRadiofemale(size),
+                buildTildTitle('รูปภาพ'),
+                buildSubTitle(),
+                buildAvater(size),
+              ],
+            ),
           ),
         ),
       ),
     );
+  }
+
+  Future<Null> uploadPictureAndInsertData() async {
+    String typeUser = 'user';
+    String username = usernameController.text;
+    String password = passwordController.text;
+    String firstname = firstnameController.text;
+    String lastname = lastnameController.text;
+    String name = nameController.text;
+    String studentID = studentIDController.text;
+    String email = emailController.text;
+    String phone = phoneController.text;
+
+    print(
+        'sex==$sex, type = $typeUser , username ==$username , password == $password , firtname == $firstname , lastname == $lastname , name == $name , studentID == $studentID ,email == $email ,phone == $phone');
+
+    String path =
+        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$username';
+    await Dio().get(path).then((value) async {
+      print('value ===>>>> $value');
+      if (value.toString() == 'null') {
+        print('## สมัครได้นะ ##');
+        if (file == null) {
+          // no avata
+          processInsertMySQL(
+            name: name,
+            firstname: firstname,
+            lastname: lastname,
+            studentID: studentID,
+            email: email,
+            phone: phone,
+            username: username,
+            password: password,
+          );
+        } else {
+          // have avata
+          String apiSaveAvtar =
+              '${MyConstant.domain}/Project/StoreRMUTL/AIP/saveAvatarUser.php';
+
+          int i = Random().nextInt(100000);
+          String nameAvatar = 'avatarUser$i.jpg';
+          Map<String, dynamic> map = Map();
+          map['file'] =
+              await MultipartFile.fromFile(file!.path, filename: nameAvatar);
+          FormData data = FormData.fromMap(map);
+          await Dio().post(apiSaveAvtar, data: data).then((value) {
+            avatar = '/Project/StoreRMUTL/avataruser/$nameAvatar';
+            processInsertMySQL();
+          });
+        }
+      } else {
+        MyDialog().normalDialog(context, 'username นี้มีคนผู่ใช้แล้ว',
+            'กรุณาเปลี่ยน username ใหม่ด้วย');
+      }
+    });
+  }
+
+  Future<Null> processInsertMySQL({
+    String? name,
+    String? firstname,
+    String? lastname,
+    String? studentID,
+    String? email,
+    String? phone,
+    String typeUser = 'user',
+    String? username,
+    String? password,
+  }) async {
+    print('processMySQL work $avatar');
+    String apiInserUset =
+        '${MyConstant.domain}/Project/StoreRMUTL/AIP/insertUser.php?isAdd=true&name=$name&firstName=$firstname&lastName=$lastname&student_id=$studentID&email=$email&phone=$phone&sex=$sex&type=$typeUser&username=$username&password=$password&avater=$avatar';
+    await Dio().get(apiInserUset).then((value) {
+      if (value.toString() == 'true') {
+        Navigator.pop(context);
+      } else {
+        MyDialog().normalDialog(context, 'ไม่สามารถสมัครได้',
+            'ไม่สามาสมัครสมาชิกได้โปรลองใหม่อีกครั้ง');
+      }
+    });
   }
 
   Future<Null> chooseImage(ImageSource source) async {
@@ -176,6 +271,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: studentIDController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก รหัสนักศึกษา ด้วย';
@@ -211,6 +307,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: usernameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก Username ด้วย';
@@ -246,10 +343,13 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: passwordController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก Password ด้วย';
-              } else {}
+              } else {
+                return null;
+              }
             },
             decoration: InputDecoration(
               labelStyle: MyConstant().h3Style(),
@@ -281,6 +381,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: firstnameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก ขื่อ ด้วย';
@@ -316,6 +417,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: nameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก ขื่อเล่น ด้วย';
@@ -351,6 +453,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: lastnameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก นามสกุล ด้วย';
@@ -386,6 +489,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: emailController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก Email ด้วย';
@@ -421,6 +525,7 @@ class _CreateUserState extends State<CreateUser> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
+            controller: phoneController,
             keyboardType: TextInputType.phone,
             validator: (value) {
               if (value!.isEmpty) {
