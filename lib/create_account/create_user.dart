@@ -114,6 +114,7 @@ class _CreateUserState extends State<CreateUser> {
             studentID: studentID,
             email: email,
             phone: phone,
+            typeUser: typeUser,
             username: username,
             password: password,
           );

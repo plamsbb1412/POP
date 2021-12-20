@@ -7,6 +7,7 @@ import 'package:flutter_application_1/utility/my_constant.dart';
 import 'package:flutter_application_1/utility/my_dialog.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,15 +29,18 @@ class _LoginState extends State<Login> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
         behavior: HitTestBehavior.opaque,
-        child: ListView(
-          children: [
-            buildImage(size),
-            buildAppName(),
-            buildUser(size),
-            buildPassword(size),
-            buildLogin(size),
-            buildCreateAccount(),
-          ],
+        child: Form(
+          key: formKey,
+          child: ListView(
+            children: [
+              buildImage(size),
+              buildAppName(),
+              buildUser(size),
+              buildPassword(size),
+              buildLogin(size),
+              buildCreateAccount(),
+            ],
+          ),
         ),
       ),
     );
@@ -52,7 +56,7 @@ class _LoginState extends State<Login> {
         ),
         TextButton(
           onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.routeChooseAccount),
+              Navigator.pushNamed(context, MyConstant.routeCreateUser),
           child: Text('สร้างบัญชีผู้ใช้'),
         ),
       ],
@@ -85,8 +89,8 @@ class _LoginState extends State<Login> {
 
   Future<Null> checkAuthen({String? user, String? password}) async {
     String apiCheckAuthen =
-        '{$MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$user';
-    await Dio().get(apiCheckAuthen).then((value) {
+        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$user';
+    await Dio().get(apiCheckAuthen).then((value) async {
       print('#### value for API=====>>> $value');
       if (value.toString() == 'null') {
         MyDialog().normalDialog(context, 'ไม่มีผู้ใช้นี้ในระบบ',
@@ -98,6 +102,11 @@ class _LoginState extends State<Login> {
             // Success Login
             String type = model.type;
             print('## Login type == $type');
+
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            preferences.setString('type', type);
+            preferences.setString('user', model.username);
             switch (type) {
               case 'store':
                 Navigator.pushNamedAndRemoveUntil(
