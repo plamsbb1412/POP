@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/create_account/create_user.dart';
+import 'package:flutter_application_1/states/add_product.dart';
 import 'package:flutter_application_1/states/login.dart';
 import 'package:flutter_application_1/states/saler_service.dart';
 import 'package:flutter_application_1/states/user_service.dart';
@@ -15,6 +16,8 @@ final Map<String, WidgetBuilder> map = {
 
   '/createUser': (BuildContext context) => CreateUser(),
   /////////////////////////////////////////////////////////
+
+  '/addProduct': (BuildContext context) => AddProduct(),
 };
 
 String? initlaRoute;

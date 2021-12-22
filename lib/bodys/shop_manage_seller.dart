@@ -10,6 +10,8 @@ class Shopmanage extends StatefulWidget {
 class _ShopmanageState extends State<Shopmanage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text('show manage'),);
+    return Scaffold(
+      body: Text('show manage'),
+    );
   }
 }

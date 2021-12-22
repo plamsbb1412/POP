@@ -10,6 +10,8 @@ class ShowOrder extends StatefulWidget {
 class _ShowOrderState extends State<ShowOrder> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text('show manage'),);
+    return Scaffold(
+      body: Text('show order'),
+    );
   }
 }

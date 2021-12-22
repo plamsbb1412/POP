@@ -105,8 +105,10 @@ class _LoginState extends State<Login> {
 
             SharedPreferences preferences =
                 await SharedPreferences.getInstance();
+            preferences.setString('id', model.id);
             preferences.setString('type', type);
             preferences.setString('user', model.username);
+            preferences.setString('name', model.name);
             switch (type) {
               case 'store':
                 Navigator.pushNamedAndRemoveUntil(
