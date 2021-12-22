@@ -10,7 +10,7 @@ class Shopmanage extends StatefulWidget {
 class _ShopmanageState extends State<Shopmanage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Text('show manage'),
     );
   }

@@ -25,7 +25,7 @@ class MyDialog {
     );
   }
 
-  Future<Null> normalDialog(
+  Future<void> normalDialog(
       BuildContext context, String title, String message) async {
     showDialog(
       context: context,
@@ -37,13 +37,14 @@ class MyDialog {
               ShowTitle(title: message, textStyle: MyConstant().h3Style()),
         ),
         children: [
-          TextButton(onPressed: () => Navigator.pop(context), child: Text('OK'))
+          TextButton(
+              onPressed: () => Navigator.pop(context), child: const Text('OK'))
         ],
       ),
     );
   }
 
-  Future<Null> actionDialog(
+  Future<void> actionDialog(
     BuildContext context,
     String title,
     String message,

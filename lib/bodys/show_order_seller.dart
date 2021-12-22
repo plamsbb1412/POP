@@ -10,7 +10,7 @@ class ShowOrder extends StatefulWidget {
 class _ShowOrderState extends State<ShowOrder> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Text('show order'),
     );
   }
