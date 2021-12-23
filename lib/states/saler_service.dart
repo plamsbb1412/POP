@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bodys/shop_manage_seller.dart';
 import 'package:flutter_application_1/bodys/show_order_seller.dart';
 import 'package:flutter_application_1/bodys/show_product_seller.dart';
+import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
 import 'package:flutter_application_1/widgets/show_signout.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
@@ -22,6 +26,31 @@ class _SalerServiceState extends State<SalerService> {
   ];
 
   int indexWidget = 0;
+  UserModel? userModel;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    findUserModel();
+  }
+
+  Future<Null> findUserModel() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String id = preferences.getString('id')!;
+    print('## id Login ID ==>> $id');
+    String apiGetUserWhereId =
+        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereId.php?isAdd=true&id=$id';
+    await Dio().get(apiGetUserWhereId).then((value) {
+      print('## value ===>> $value');
+      for (var item in json.decode(value.data)) {
+        setState(() {
+          userModel = UserModel.fromMap(item);
+          print('### name login = ${userModel!.name}');
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +64,7 @@ class _SalerServiceState extends State<SalerService> {
             ShowSignOut(),
             Column(
               children: [
-                UserAccountsDrawerHeader(accountName: null, accountEmail: null),
+                buildHead(),
                 menuShowOrder(),
                 menuShopManage(),
                 menuShowProduct(),
@@ -46,6 +75,32 @@ class _SalerServiceState extends State<SalerService> {
       ),
       body: widgets[indexWidget],
     );
+  }
+
+  UserAccountsDrawerHeader buildHead() {
+    return UserAccountsDrawerHeader(
+        otherAccountsPictures: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.face_outlined),
+            iconSize: 36,
+            color: MyConstant.light,
+            tooltip: 'Edit Shop',
+          ),
+        ],
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            colors: [MyConstant.light, MyConstant.dark],
+            center: Alignment(-0.8, -0.2),
+            radius: 1,
+          ),
+        ),
+        currentAccountPicture: CircleAvatar(
+          backgroundImage: NetworkImage(
+              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}'),
+        ),
+        accountName: Text(userModel == null ? 'Name ?' : userModel!.name),
+        accountEmail: Text(userModel == null ? 'Type ?' : userModel!.type));
   }
 
   ListTile menuShowOrder() {

@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/product_model.dart';
+import 'package:flutter_application_1/states/edit_product.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
+import 'package:flutter_application_1/widgets/show_image.dart';
 import 'package:flutter_application_1/widgets/show_progress.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,6 +32,10 @@ class _ShowProductState extends State<ShowProduct> {
   }
 
   Future<Null> loadValueFromAPI() async {
+    if (productModels.length != 0) {
+      productModels.clear();
+    } else {}
+
     SharedPreferences preferences = await SharedPreferences.getInstance();
     String id = preferences.getString('id')!;
 
@@ -82,7 +89,8 @@ class _ShowProductState extends State<ShowProduct> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: MyConstant.dark,
         onPressed: () =>
-            Navigator.pushNamed(context, MyConstant.routeAddProduct),
+            Navigator.pushNamed(context, MyConstant.routeAddProduct)
+                .then((value) => loadValueFromAPI()),
         child: Text('Add'),
       ),
     );
@@ -91,7 +99,7 @@ class _ShowProductState extends State<ShowProduct> {
   String createUrl(String string) {
     String result = string.substring(1, string.length - 1);
     List<String> strings = result.split(',');
-    String url = '${MyConstant.domain}/Project/StoreRMUTL/API/${strings[0]}';
+    String url = '${MyConstant.domain}/Project/StoreRMUTL/AIP${strings[0]}';
     return url;
   }
 
@@ -113,13 +121,15 @@ class _ShowProductState extends State<ShowProduct> {
                       title: productModels[index].nameProduct,
                       textStyle: MyConstant().h2Style()),
                   Container(
-                    width: constraints.maxHeight * 0.5,
-                    height: constraints.maxWidth * 0.4,
-                    child: Image.network(
-                      createUrl(productModels[index].image),
-                      fit: BoxFit.cover,
-                    ),
-                  )
+                      width: constraints.maxHeight * 0.5,
+                      height: constraints.maxWidth * 0.4,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: createUrl(productModels[index].image),
+                        placeholder: (context, url) => ShowProgress(),
+                        errorWidget: (context, url, error) =>
+                            ShowImage(path: MyConstant.imageAddProduct),
+                      ))
                 ],
               ),
             ),
@@ -128,6 +138,7 @@ class _ShowProductState extends State<ShowProduct> {
               width: constraints.maxWidth * 0.5 - 4,
               height: constraints.maxWidth * 0.4,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ShowTitle(
@@ -137,11 +148,82 @@ class _ShowProductState extends State<ShowProduct> {
                       title:
                           'ราคา(พิเศษ) :${productModels[index].priceSpecial} บาท',
                       textStyle: MyConstant().h2Style()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                          onPressed: () {
+                            print('## You Click Edit');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditProduct(
+                                    productModel: productModels[index],
+                                  ),
+                                )).then((value) => loadValueFromAPI());
+                          },
+                          icon: Icon(
+                            Icons.edit_outlined,
+                            size: 36,
+                            color: MyConstant.dark,
+                          )),
+                      IconButton(
+                          onPressed: () {
+                            print('## You Click Delete from index = $index');
+                            confirmDialogDelete(productModels[index]);
+                          },
+                          icon: Icon(
+                            Icons.delete_outline,
+                            size: 36,
+                            color: MyConstant.dark,
+                          )),
+                    ],
+                  )
                 ],
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Future<Null> confirmDialogDelete(ProductModel productModel) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: ListTile(
+          leading: CachedNetworkImage(
+            imageUrl: createUrl(productModel.image),
+            placeholder: (context, url) => ShowProgress(),
+          ),
+          title: ShowTitle(
+            title: 'Delete ${productModel.nameProduct} ?',
+            textStyle: MyConstant().h2Style(),
+          ),
+          subtitle: ShowTitle(
+            title: 'คุณต้องการลบเมนู ${productModel.nameProduct} จริงหรือไม่?',
+            textStyle: MyConstant().h3Style(),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              print('## Confirm Delete at id ==> ${productModel.id}');
+              String apiDeleteProductWhereId =
+                  '${MyConstant.domain}/Project/StoreRMUTL/AIP/deletProductWhereId.php?isAdd=true&id=${productModel.id}';
+              await Dio().get(apiDeleteProductWhereId).then((value) {
+                Navigator.pop(context);
+                loadValueFromAPI();
+              });
+            },
+            child: Text('Delete'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+        ],
       ),
     );
   }
