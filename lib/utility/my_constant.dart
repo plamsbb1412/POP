@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'POT App';
-  static String domain = 'https://aeff-49-231-193-42.ngrok.io';
+  static String domain =
+      'https://4b8b-2001-44c8-44c4-3666-384b-32d1-d7c3-c61a.ngrok.io';
   // Route
   static String routeLogin = '/login';
   static String routeUserService = '/userService';
