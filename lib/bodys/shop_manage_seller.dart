@@ -26,98 +26,130 @@ class _ShopmanageState extends State<Shopmanage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: MyConstant.primary,
+          child: Icon(Icons.edit),
+          onPressed: () =>
+              Navigator.pushNamed(context, MyConstant.routeEditProfileStore),
+        ),
         body: LayoutBuilder(
-      builder: (context, constraints) => Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
+          builder: (context, constraints) => Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ShowTitle(
-                title: 'รูปโปรไฟล์ :', textStyle: MyConstant().h2Style()),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: constraints.maxWidth * 0.6,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}',
-                  placeholder: (context, url) => ShowProgress(),
-                ),
-              ),
-            ],
-          ),
-          ShowTitle(title: 'ชื่อคนขาย :', textStyle: MyConstant().h2Style()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ShowTitle(
-                    title: userModel!.name, textStyle: MyConstant().h1Style()),
-              ),
-            ],
-          ),
-          ShowTitle(title: 'ชื่อร้าน :', textStyle: MyConstant().h2Style()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ShowTitle(
-                    title: userModel!.name_store,
-                    textStyle: MyConstant().h1Style()),
-              ),
-            ],
-          ),
-          ShowTitle(
-              title: 'รายละเอียดของร้าน :', textStyle: MyConstant().h2Style()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: constraints.maxWidth * 0.6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ShowTitle(
-                          title: userModel!.details,
-                          textStyle: MyConstant().h2Style()),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title: 'รูปโปรไฟล์ :',
+                        textStyle: MyConstant().h2Style()),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: constraints.maxWidth * 0.6,
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}',
+                          placeholder: (context, url) => ShowProgress(),
+                        ),
+                      ),
+                    ],
+                  ),
+                  ShowTitle(
+                      title: 'ชื่อคนขาย :', textStyle: MyConstant().h2Style()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ShowTitle(
+                            title: userModel!.name,
+                            textStyle: MyConstant().h1Style()),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title:
+                            'ชื่อ :  ${userModel!.firstName}  ${userModel!.lastName}',
+                        textStyle: MyConstant().h2Style()),
+                  ),
+                  ShowTitle(
+                      title: 'ชื่อร้าน :', textStyle: MyConstant().h2Style()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ShowTitle(
+                            title: userModel!.name_store,
+                            textStyle: MyConstant().h1Style()),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title: 'รายละเอียดของร้าน :',
+                        textStyle: MyConstant().h2Style()),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: constraints.maxWidth * 0.6,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShowTitle(
+                                  title: userModel!.details,
+                                  textStyle: MyConstant().h2Style()),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title: 'เบอร์โทร :  ${userModel!.phone}',
+                        textStyle: MyConstant().h2Style()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title: 'Email :  ${userModel!.email}',
+                        textStyle: MyConstant().h2Style()),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ShowTitle(
+                        title: 'รูปร้าน :', textStyle: MyConstant().h2Style()),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: constraints.maxWidth * 0.6,
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.profile_store}',
+                          placeholder: (context, url) => ShowProgress(),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ShowTitle(
-                title: 'เบอร์โทร :  ${userModel!.phone}',
-                textStyle: MyConstant().h2Style()),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ShowTitle(
-                title: 'รูปร้าน :', textStyle: MyConstant().h2Style()),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                width: constraints.maxWidth * 0.6,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.profile_store}',
-                  placeholder: (context, url) => ShowProgress(),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ));
+        ));
   }
 }
