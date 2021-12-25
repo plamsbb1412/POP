@@ -7,6 +7,7 @@ import 'package:flutter_application_1/bodys/show_order_seller.dart';
 import 'package:flutter_application_1/bodys/show_product_seller.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
+import 'package:flutter_application_1/widgets/show_progress.dart';
 import 'package:flutter_application_1/widgets/show_signout.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,11 +20,7 @@ class SalerService extends StatefulWidget {
 }
 
 class _SalerServiceState extends State<SalerService> {
-  List<Widget> widgets = [
-    ShowOrder(),
-    Shopmanage(),
-    ShowProduct(),
-  ];
+  List<Widget> widgets = [];
 
   int indexWidget = 0;
   UserModel? userModel;
@@ -46,7 +43,9 @@ class _SalerServiceState extends State<SalerService> {
       for (var item in json.decode(value.data)) {
         setState(() {
           userModel = UserModel.fromMap(item);
-          print('### name login = ${userModel!.name}');
+          widgets.add(ShowOrder());
+          widgets.add(Shopmanage(userModel: userModel!));
+          widgets.add(ShowProduct());
         });
       }
     });
@@ -58,22 +57,24 @@ class _SalerServiceState extends State<SalerService> {
       appBar: AppBar(
         title: Text('Store'),
       ),
-      drawer: Drawer(
-        child: Stack(
-          children: [
-            ShowSignOut(),
-            Column(
-              children: [
-                buildHead(),
-                menuShowOrder(),
-                menuShopManage(),
-                menuShowProduct(),
-              ],
+      drawer: widgets.length == 0
+          ? SizedBox()
+          : Drawer(
+              child: Stack(
+                children: [
+                  ShowSignOut(),
+                  Column(
+                    children: [
+                      buildHead(),
+                      menuShowOrder(),
+                      menuShopManage(),
+                      menuShowProduct(),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
-      ),
-      body: widgets[indexWidget],
+      body: widgets.length == 0 ? ShowProgress() : widgets[indexWidget],
     );
   }
 

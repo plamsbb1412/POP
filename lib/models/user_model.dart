@@ -6,6 +6,7 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String name_store;
+  final String details;
   final String student_id;
   final String email;
   final String phone;
@@ -21,6 +22,7 @@ class UserModel {
     required this.firstName,
     required this.lastName,
     required this.name_store,
+    required this.details,
     required this.student_id,
     required this.email,
     required this.phone,
@@ -38,6 +40,7 @@ class UserModel {
     String? firstName,
     String? lastName,
     String? name_store,
+    String? details,
     String? student_id,
     String? email,
     String? phone,
@@ -54,6 +57,7 @@ class UserModel {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       name_store: name_store ?? this.name_store,
+      details: details ?? this.details,
       student_id: student_id ?? this.student_id,
       email: email ?? this.email,
       phone: phone ?? this.phone,
@@ -73,6 +77,7 @@ class UserModel {
       'firstName': firstName,
       'lastName': lastName,
       'name_store': name_store,
+      'details': details,
       'student_id': student_id,
       'email': email,
       'phone': phone,
@@ -92,6 +97,7 @@ class UserModel {
       firstName: map['firstName'] ?? '',
       lastName: map['lastName'] ?? '',
       name_store: map['name_store'] ?? '',
+      details: map['details'] ?? '',
       student_id: map['student_id'] ?? '',
       email: map['email'] ?? '',
       phone: map['phone'] ?? '',
@@ -111,7 +117,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(id: $id, name: $name, firstName: $firstName, lastName: $lastName, name_store: $name_store, student_id: $student_id, email: $email, phone: $phone, sex: $sex, type: $type, username: $username, password: $password, avater: $avater, profile_store: $profile_store)';
+    return 'UserModel(id: $id, name: $name, firstName: $firstName, lastName: $lastName, name_store: $name_store, details: $details, student_id: $student_id, email: $email, phone: $phone, sex: $sex, type: $type, username: $username, password: $password, avater: $avater, profile_store: $profile_store)';
   }
 
   @override
@@ -124,6 +130,7 @@ class UserModel {
         other.firstName == firstName &&
         other.lastName == lastName &&
         other.name_store == name_store &&
+        other.details == details &&
         other.student_id == student_id &&
         other.email == email &&
         other.phone == phone &&
@@ -142,6 +149,7 @@ class UserModel {
         firstName.hashCode ^
         lastName.hashCode ^
         name_store.hashCode ^
+        details.hashCode ^
         student_id.hashCode ^
         email.hashCode ^
         phone.hashCode ^
