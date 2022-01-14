@@ -143,7 +143,7 @@ class _EditProductState extends State<EditProduct> {
             child: files[index] == null
                 ? CachedNetworkImage(
                     imageUrl:
-                        '${MyConstant.domain}/Project/StoreRMUTL/AIP${pathImages[index]}',
+                        '${MyConstant.domain}/Project/StoreRMUTL/API${pathImages[index]}',
                     placeholder: (context, url) => ShowProgress(),
                   )
                 : Image.file(files[index]!),
@@ -264,14 +264,14 @@ class _EditProductState extends State<EditProduct> {
             int i = Random().nextInt(1000000);
             String nameImage = 'productEdit$i.jpg';
             String apiUploadImage =
-                '${MyConstant.domain}/Project/StoreRMUTL/AIP/saveProduct.php';
+                '${MyConstant.domain}/Project/StoreRMUTL/API/saveProduct.php';
 
             Map<String, dynamic> map = {};
             map['file'] =
                 await MultipartFile.fromFile(item.path, filename: nameImage);
             FormData formData = FormData.fromMap(map);
             await Dio().post(apiUploadImage, data: formData).then((value) {
-              pathImages[index] = '/Project/StoreRMUTL/AIP/$nameImage';
+              pathImages[index] = '/Project/StoreRMUTL/API/$nameImage';
             });
           }
           index++;
@@ -290,7 +290,7 @@ class _EditProductState extends State<EditProduct> {
       print('## images = $images');
 
       String apiEditProduct =
-          '${MyConstant.domain}/Project/StoreRMUTL/AIP/editProductWhereId.php?isAdd=true&id=$id&nameProduct=$name&price=$price&priceSpecial=$priceSpecial&image=$images';
+          '${MyConstant.domain}/Project/StoreRMUTL/API/editProductWhereId.php?isAdd=true&id=$id&nameProduct=$name&price=$price&priceSpecial=$priceSpecial&image=$images';
       await Dio().get(apiEditProduct).then((value) => Navigator.pop(context));
     }
   }

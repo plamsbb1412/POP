@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
 import 'package:flutter_application_1/utility/my_dialog.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
@@ -103,7 +102,7 @@ class _AddProductState extends State<AddProduct> {
         MyDialog().showProgressDialog(context);
 
         String apiSaveProduct =
-            '${MyConstant.domain}/Project/StoreRMUTL/AIP/saveProduct.php';
+            '${MyConstant.domain}/Project/StoreRMUTL/API/saveProduct.php';
         // print('### apiSaveProduct == $apiSaveProduct');
 
         int loop = 0;
@@ -135,7 +134,7 @@ class _AddProductState extends State<AddProduct> {
               print('### images ==> $images');
 
               String path =
-                  '${MyConstant.domain}/Project/StoreRMUTL/AIP/insertProduct.php?isAdd=true&idStore=$idSeller&nameStore=$nameSeller&nameProduct=$name&price=$price&priceSpecial=$priceSpecial&image=$images';
+                  '${MyConstant.domain}/Project/StoreRMUTL/API/insertProduct.php?isAdd=true&idStore=$idSeller&nameStore=$nameSeller&nameProduct=$name&price=$price&priceSpecial=$priceSpecial&image=$images';
 
               await Dio().get(path).then((value) => Navigator.pop(context));
 

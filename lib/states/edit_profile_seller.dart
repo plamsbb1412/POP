@@ -47,7 +47,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
     print('Usersoter ===>>> $user');
 
     String apiGetUser =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$user';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/getUserWhereUser.php?isAdd=true&username=$user';
     await Dio().get(apiGetUser).then((value) {
       print('value from API ==>> $value');
       for (var item in json.decode(value.data)) {
@@ -139,7 +139,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
   Future<Null> editValueToMySQL(String pathAvatar) async {
     print('## pathAvatar ==> $pathAvatar');
     String apiEditProfile =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/editProfileSellerWhereid.php?isAdd=true&id=${userModel!.id}&name=${userModel!.name}&firstName=${userModel!.firstName}&lastName=${userModel!.lastName}&name_store=${userModel!.name_store}&details=${userModel!.details}&email=${userModel!.email}&phone=${userModel!.phone}&avater=${userModel!.avater}&profile_store=${userModel!.profile_store}';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/editProfileSellerWhereid.php?isAdd=true&id=${userModel!.id}&name=${userModel!.name}&firstName=${userModel!.firstName}&lastName=${userModel!.lastName}&name_store=${userModel!.name_store}&details=${userModel!.details}&email=${userModel!.email}&phone=${userModel!.phone}&avater=${userModel!.avater}&profile_store=${userModel!.profile_store}';
     await Dio().get(apiEditProfile).then((value) {
       Navigator.pop(context);
       Navigator.pop(context);
@@ -211,7 +211,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
   CachedNetworkImage buildShowImageNetwork() {
     return CachedNetworkImage(
       imageUrl:
-          '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}',
+          '${MyConstant.domain}/Project/StoreRMUTL/API${userModel!.avater}',
       placeholder: (context, url) => ShowProgress(),
     );
   }
@@ -241,7 +241,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
                             ? ShowImage(path: MyConstant.imageavatar)
                             : CachedNetworkImage(
                                 imageUrl:
-                                    '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.profile_store}',
+                                    '${MyConstant.domain}/Project/StoreRMUTL/API${userModel!.profile_store}',
                                 placeholder: (context, url) => ShowProgress(),
                               ),
                       ),

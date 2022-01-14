@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
@@ -23,6 +26,19 @@ class _ShopmanageState extends State<Shopmanage> {
     userModel = widget.userModel;
   }
 
+  Future<Null> refreshUserModel() async {
+    print('## refreshUserModel Work');
+    String apiGetUserWhereId =
+        '${MyConstant.domain}/Project/StoreRMUTL/API/deletProductWhereId.php?isAdd=true&id=${userModel!.id}';
+    await Dio().get(apiGetUserWhereId).then((value) {
+      for (var item in json.decode(value.data)) {
+        setState(() {
+          userModel = UserModel.fromMap(item);
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,7 +46,8 @@ class _ShopmanageState extends State<Shopmanage> {
           backgroundColor: MyConstant.primary,
           child: Icon(Icons.edit),
           onPressed: () =>
-              Navigator.pushNamed(context, MyConstant.routeEditProfileStore),
+              Navigator.pushNamed(context, MyConstant.routeEditProfileStore)
+                  .then((value) => refreshUserModel()),
         ),
         body: LayoutBuilder(
           builder: (context, constraints) => Padding(
@@ -52,7 +69,7 @@ class _ShopmanageState extends State<Shopmanage> {
                         width: constraints.maxWidth * 0.6,
                         child: CachedNetworkImage(
                           imageUrl:
-                              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}',
+                              '${MyConstant.domain}/Project/StoreRMUTL/API${userModel!.avater}',
                           placeholder: (context, url) => ShowProgress(),
                         ),
                       ),
@@ -140,7 +157,7 @@ class _ShopmanageState extends State<Shopmanage> {
                         width: constraints.maxWidth * 0.6,
                         child: CachedNetworkImage(
                           imageUrl:
-                              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.profile_store}',
+                              '${MyConstant.domain}/Project/StoreRMUTL/API${userModel!.profile_store}',
                           placeholder: (context, url) => ShowProgress(),
                         ),
                       ),

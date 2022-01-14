@@ -40,7 +40,7 @@ class _ShowProductState extends State<ShowProduct> {
     String id = preferences.getString('id')!;
 
     String apiGetProductWhereIdStore =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getProductWheresStore.php?isAdd=true&idStore=$id';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/getProductWheresStore.php?isAdd=true&idStore=$id';
 
     await Dio().get(apiGetProductWhereIdStore).then((value) {
       // print('value ==> $value');
@@ -99,7 +99,7 @@ class _ShowProductState extends State<ShowProduct> {
   String createUrl(String string) {
     String result = string.substring(1, string.length - 1);
     List<String> strings = result.split(',');
-    String url = '${MyConstant.domain}/Project/StoreRMUTL/AIP${strings[0]}';
+    String url = '${MyConstant.domain}/Project/StoreRMUTL/API${strings[0]}';
     return url;
   }
 
@@ -211,7 +211,7 @@ class _ShowProductState extends State<ShowProduct> {
             onPressed: () async {
               print('## Confirm Delete at id ==> ${productModel.id}');
               String apiDeleteProductWhereId =
-                  '${MyConstant.domain}/Project/StoreRMUTL/AIP/deletProductWhereId.php?isAdd=true&id=${productModel.id}';
+                  '${MyConstant.domain}/Project/StoreRMUTL/API/deletProductWhereId.php?isAdd=true&id=${productModel.id}';
               await Dio().get(apiDeleteProductWhereId).then((value) {
                 Navigator.pop(context);
                 loadValueFromAPI();

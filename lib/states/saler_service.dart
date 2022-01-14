@@ -37,7 +37,7 @@ class _SalerServiceState extends State<SalerService> {
     String id = preferences.getString('id')!;
     print('## id Login ID ==>> $id');
     String apiGetUserWhereId =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereId.php?isAdd=true&id=$id';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/getUserWhereId.php?isAdd=true&id=$id';
     await Dio().get(apiGetUserWhereId).then((value) {
       print('## value ===>> $value');
       for (var item in json.decode(value.data)) {
@@ -98,7 +98,7 @@ class _SalerServiceState extends State<SalerService> {
         ),
         currentAccountPicture: CircleAvatar(
           backgroundImage: NetworkImage(
-              '${MyConstant.domain}/Project/StoreRMUTL/AIP${userModel!.avater}'),
+              '${MyConstant.domain}/Project/StoreRMUTL/API${userModel!.avater}'),
         ),
         accountName: Text(userModel == null ? 'Name ?' : userModel!.name),
         accountEmail: Text(userModel == null ? 'Type ?' : userModel!.type));

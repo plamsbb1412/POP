@@ -61,16 +61,16 @@ class _CreateUserState extends State<CreateUser> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                buildTildTitle('username และ password  '),
-                buildUser(size),
-                buildPassword(size),
                 buildTildTitle('ข้อมูลทั่วไป '),
+                buildName(size),
                 buildFirstName(size),
                 buildLastName(size),
-                buildName(size),
                 buildStudentID(size),
                 buildEmail(size),
                 buildPhone(size),
+                buildTildTitle('username และ password  '),
+                buildUser(size),
+                buildPassword(size),
                 buildTildTitle('เพส  '),
                 buildRadioMan(size),
                 buildRadiofemale(size),
@@ -100,7 +100,7 @@ class _CreateUserState extends State<CreateUser> {
         'sex==$sex, type = $typeUser , username ==$username , password == $password , firtname == $firstname , lastname == $lastname , name == $name , studentID == $studentID ,email == $email ,phone == $phone');
 
     String path =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/getUserWhereUser.php?isAdd=true&username=$username';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/getUserWhereUser.php?isAdd=true&username=$username';
     await Dio().get(path).then((value) async {
       print('value ===>>>> $value');
       if (value.toString() == 'null') {
@@ -111,17 +111,17 @@ class _CreateUserState extends State<CreateUser> {
             name: name,
             firstname: firstname,
             lastname: lastname,
+            username: username,
+            password: password,
             studentID: studentID,
             email: email,
             phone: phone,
             typeUser: typeUser,
-            username: username,
-            password: password,
           );
         } else {
           // have avata
           String apiSaveAvtar =
-              '${MyConstant.domain}/Project/StoreRMUTL/AIP/saveAvatarUser.php';
+              '${MyConstant.domain}/Project/StoreRMUTL/API/saveAvatarUser.php';
 
           int i = Random().nextInt(100000);
           String nameAvatar = 'avatarUser$i.jpg';
@@ -130,7 +130,7 @@ class _CreateUserState extends State<CreateUser> {
               await MultipartFile.fromFile(file!.path, filename: nameAvatar);
           FormData data = FormData.fromMap(map);
           await Dio().post(apiSaveAvtar, data: data).then((value) {
-            avatar = '/Project/StoreRMUTL/avataruser/$nameAvatar';
+            avatar = '/Project/StoreRMUTL/API/avataruser/$nameAvatar';
             processInsertMySQL();
           });
         }
@@ -142,19 +142,19 @@ class _CreateUserState extends State<CreateUser> {
   }
 
   Future<Null> processInsertMySQL({
-    String? name,
+    String? username,
+    String? password,
     String? firstname,
     String? lastname,
+    String? name,
     String? studentID,
     String? email,
     String? phone,
     String typeUser = 'user',
-    String? username,
-    String? password,
   }) async {
     print('processMySQL work $avatar');
     String apiInserUset =
-        '${MyConstant.domain}/Project/StoreRMUTL/AIP/insertUser.php?isAdd=true&name=$name&firstName=$firstname&lastName=$lastname&student_id=$studentID&email=$email&phone=$phone&sex=$sex&type=$typeUser&username=$username&password=$password&avater=$avatar';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/insertUser.php?isAdd=true&name=$name&firstName=$firstname&lastName=$lastname&username=$username&password=$password&student_id=$studentID&email=$email&phone=$phone&sex=$sex&type=$typeUser&avater=$avatar';
     await Dio().get(apiInserUset).then((value) {
       if (value.toString() == 'true') {
         Navigator.pop(context);
