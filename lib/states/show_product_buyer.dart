@@ -24,6 +24,8 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
   bool? haveProduct;
   List<ProductModel> productModels = [];
   List<List<String>> listImages = [];
+  int indexImage = 0;
+  int amountInt = 1;
 
   @override
   void initState() {
@@ -54,7 +56,7 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
         itemCount: productModels.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            print('### you cilck index ==>> $index ###');
+            //  print('### you cilck index ==>> $index ###');
             showalertDialog(
               productModels[index],
               listImages[index],
@@ -109,7 +111,7 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
         '${MyConstant.domain}/Project/StoreRMUTL/API/getProductWhereIDShop.php?isAdd=true&idStore=${userModel!.id}';
     await Dio().get(urlAPI).then(
       (value) {
-        print('###### value =====>>>$value #####');
+        // print('###### value =====>>>$value #####');
 
         if (value.toString() == 'null') {
           setState(() {
@@ -150,42 +152,137 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
       index++;
     }
     String result = '${MyConstant.domain}/Project/StoreRMUTL/API${strings[0]}';
-    print('### result = $result');
+    // print('### result = $result');
     return result;
   }
 
   Future<Null> showalertDialog(
       ProductModel productModel, List<String> images) async {
     showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: ListTile(
-          leading: ShowImage(path: MyConstant.imageLogo),
-          title: ShowTitle(
-            title: productModel.nameProduct,
-            textStyle: MyConstant().h2Style(),
-          ),
-          subtitle: Column(
-            children: [
-              ShowTitle(
-                  title: 'ราคา(ธรรมดา) = ${productModel.price} บาท',
-                  textStyle: MyConstant().h3Style()),
-              ShowTitle(
-                  title: 'ราคา(พิเศษ) = ${productModel.priceSpecial} บาท',
-                  textStyle: MyConstant().h3Style()),
-            ],
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CachedNetworkImage(
-                imageUrl:
-                    '${MyConstant.domain}/Project/StoreRMUTL/API${images[0]}'),
-            IconButton(onPressed: () {}, icon: Icon(Icons.filter_1))
-          ],
-        ),
-      ),
-    );
+        context: context,
+        builder: (context) => StatefulBuilder(
+              builder: (context, setState) => AlertDialog(
+                title: ListTile(
+                  leading: ShowImage(path: MyConstant.imageLogo),
+                  title: ShowTitle(
+                    title: productModel.nameProduct,
+                    textStyle: MyConstant().h2Style(),
+                  ),
+                  subtitle: Column(
+                    children: [
+                      ShowTitle(
+                          title: 'ราคา(ธรรมดา) = ${productModel.price} บาท',
+                          textStyle: MyConstant().h3Style()),
+                      ShowTitle(
+                          title:
+                              'ราคา(พิเศษ) = ${productModel.priceSpecial} บาท',
+                          textStyle: MyConstant().h3Style()),
+                    ],
+                  ),
+                ),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl:
+                          '${MyConstant.domain}/Project/StoreRMUTL/API${images[indexImage]}',
+                      placeholder: (context, url) => ShowProgress(),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  indexImage = 0;
+                                });
+                              },
+                              icon: Icon(Icons.filter_1)),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  indexImage = 1;
+                                });
+                              },
+                              icon: Icon(Icons.filter_2)),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  indexImage = 2;
+                                });
+                              },
+                              icon: Icon(Icons.filter_3)),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  indexImage = 3;
+                                });
+                              },
+                              icon: Icon(Icons.filter_4)),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              if (amountInt != 1) {
+                                setState(() {
+                                  amountInt--;
+                                });
+                              }
+                            },
+                            icon: Icon(
+                              Icons.remove_circle_outline,
+                              color: MyConstant.dark,
+                            )),
+                        ShowTitle(
+                            title: amountInt.toString(),
+                            textStyle: MyConstant().h1Style()),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                amountInt++;
+                              });
+                            },
+                            icon: Icon(
+                              Icons.add_circle_outline,
+                              color: MyConstant.dark,
+                            )),
+                      ],
+                    ),
+                  ],
+                ),
+                actions: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          String idStore = userModel!.id;
+                          String idProduct = productModel.id;
+                          // Navigator.pop(context);
+
+                          print(
+                              '### IDStore = $idStore , IDProduct = $idProduct  ###');
+                        },
+                        child: ShowTitle(
+                            title: 'ใส่ตระกร้า',
+                            textStyle: MyConstant().h2BlueStyle()),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: ShowTitle(
+                            title: 'ยกเลิก',
+                            textStyle: MyConstant().h2RedStyle()),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ));
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'POT App';
-  static String domain = 'https://a449-171-4-221-191.ngrok.io';
+  static String domain = 'https://ece2-171-4-221-191.ngrok.io';
   // Route
   static String routeLogin = '/login';
   static String routeUserService = '/userService';
@@ -15,6 +15,7 @@ class MyConstant {
   /////////////////////////////////////////////////////////
   static String routeAddProduct = '/addProduct';
   static String routeEditProfileStore = '/editProfileStore';
+  static String routeShowCart = '/showCart';
 
   // image
   static String imageLogo = 'images/logoApp.png';
@@ -53,6 +54,16 @@ class MyConstant {
   TextStyle h2whistStyle() => TextStyle(
         fontSize: 18,
         color: Colors.white,
+        fontWeight: FontWeight.w700,
+      );
+  TextStyle h2RedStyle() => TextStyle(
+        fontSize: 18,
+        color: Colors.red.shade700,
+        fontWeight: FontWeight.w700,
+      );
+  TextStyle h2BlueStyle() => TextStyle(
+        fontSize: 18,
+        color: Colors.blue.shade800,
         fontWeight: FontWeight.w700,
       );
 

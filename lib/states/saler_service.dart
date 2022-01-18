@@ -56,6 +56,12 @@ class _SalerServiceState extends State<SalerService> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Store'),
+        actions: [
+          IconButton(
+              onPressed: () =>
+                  Navigator.pushNamed(context, MyConstant.routeShowCart),
+              icon: Icon(Icons.shopping_cart_outlined))
+        ],
       ),
       drawer: widgets.length == 0
           ? SizedBox()
