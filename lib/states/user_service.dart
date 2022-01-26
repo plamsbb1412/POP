@@ -27,6 +27,13 @@ class _UserServiceState extends State<UserService> {
     return Scaffold(
       appBar: AppBar(
         title: Text('User'),
+        actions: [
+          IconButton(
+            onPressed: () =>
+                Navigator.pushNamed(context, MyConstant.routeShowCart),
+            icon: Icon(Icons.shopping_cart_outlined),
+          )
+        ],
       ),
       drawer: Drawer(
         child: Stack(

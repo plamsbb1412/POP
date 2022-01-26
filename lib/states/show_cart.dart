@@ -20,6 +20,7 @@ class _ShowCartState extends State<ShowCart> {
 
   Future<Null> processReadSQlit() async {
     await SQLiterHelper().readSQLite().then((value) {
+      print('#### value on processReadSQLite ==>>> $value');
       setState(() {
         sqliteModels = value;
       });

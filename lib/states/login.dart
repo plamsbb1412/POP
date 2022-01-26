@@ -19,7 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   bool statusRedEye = true;
   final formKey = GlobalKey<FormState>();
-  TextEditingController userController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -74,10 +74,10 @@ class _LoginState extends State<Login> {
             style: MyConstant().myButtonStyle(),
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                String user = userController.text;
+                String username = usernameController.text;
                 String password = passwordController.text;
-                print('## user = $user ,password= $password ##');
-                checkAuthen(user: user, password: password);
+                print('## user = $username ,password= $password ##');
+                checkAuthen(username: username, password: password);
               }
             },
             child: Text('Login'),
@@ -87,14 +87,14 @@ class _LoginState extends State<Login> {
     );
   }
 
-  Future<Null> checkAuthen({String? user, String? password}) async {
+  Future<Null> checkAuthen({String? username, String? password}) async {
     String apiCheckAuthen =
-        '${MyConstant.domain}/Project/StoreRMUTL/API/getUserWhereUser.php?isAdd=true&username=$user';
+        '${MyConstant.domain}/Project/StoreRMUTL/API/getUserWhereUser.php?isAdd=true&username=$username';
     await Dio().get(apiCheckAuthen).then((value) async {
       print('#### value for API=====>>> $value');
       if (value.toString() == 'null') {
         MyDialog().normalDialog(context, 'ไม่มีผู้ใช้นี้ในระบบ',
-            'ไม่มี $user ในระบบโปรดู username แล้วลองใหม่');
+            'ไม่มี $username ในระบบโปรดู username แล้วลองใหม่');
       } else {
         for (var item in json.decode(value.data)) {
           UserModel model = UserModel.fromMap(item);
@@ -140,7 +140,7 @@ class _LoginState extends State<Login> {
           margin: EdgeInsets.only(top: 16),
           width: size * 0.6,
           child: TextFormField(
-            controller: userController,
+            controller: usernameController,
             validator: (value) {
               if (value!.isEmpty) {
                 return 'กรุณากรอก username';

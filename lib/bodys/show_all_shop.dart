@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/bodys/show_product_seller.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/states/show_product_buyer.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';

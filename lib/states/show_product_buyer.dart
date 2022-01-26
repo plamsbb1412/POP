@@ -4,8 +4,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/product_model.dart';
+import 'package:flutter_application_1/models/sqlite_model.dart';
 import 'package:flutter_application_1/models/user_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
+import 'package:flutter_application_1/utility/my_dialog.dart';
+import 'package:flutter_application_1/utility/sqliteHelper.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
 import 'package:flutter_application_1/widgets/show_progress.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
@@ -26,6 +29,8 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
   List<List<String>> listImages = [];
   int indexImage = 0;
   int amountInt = 1;
+  String? pick;
+  String? currentIdSeller;
 
   @override
   void initState() {
@@ -168,91 +173,126 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
                     title: productModel.nameProduct,
                     textStyle: MyConstant().h2Style(),
                   ),
-                  subtitle: Column(
-                    children: [
-                      ShowTitle(
-                          title: 'ราคา(ธรรมดา) = ${productModel.price} บาท',
-                          textStyle: MyConstant().h3Style()),
-                      ShowTitle(
-                          title:
-                              'ราคา(พิเศษ) = ${productModel.priceSpecial} บาท',
-                          textStyle: MyConstant().h3Style()),
-                    ],
-                  ),
                 ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    CachedNetworkImage(
-                      imageUrl:
-                          '${MyConstant.domain}/Project/StoreRMUTL/API${images[indexImage]}',
-                      placeholder: (context, url) => ShowProgress(),
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        width: 220.0,
+                        height: 160.0,
+                        child: CachedNetworkImage(
+                          imageUrl:
+                              '${MyConstant.domain}/Project/StoreRMUTL/API${images[indexImage]}',
+                          placeholder: (context, url) => ShowProgress(),
+                        ),
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 0;
+                                  });
+                                },
+                                icon: Icon(Icons.filter_1)),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 1;
+                                  });
+                                },
+                                icon: Icon(Icons.filter_2)),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 2;
+                                  });
+                                },
+                                icon: Icon(Icons.filter_3)),
+                            IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    indexImage = 3;
+                                  });
+                                },
+                                icon: Icon(Icons.filter_4)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 0;
-                                });
-                              },
-                              icon: Icon(Icons.filter_1)),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 1;
-                                });
-                              },
-                              icon: Icon(Icons.filter_2)),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 2;
-                                });
-                              },
-                              icon: Icon(Icons.filter_3)),
-                          IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  indexImage = 3;
-                                });
-                              },
-                              icon: Icon(Icons.filter_4)),
+                          RadioListTile(
+                            title: ShowTitle(
+                                title:
+                                    'ราคา(ธรรมดา) = ${productModel.price} บาท',
+                                textStyle: MyConstant().h3Style()),
+                            value: productModel.price,
+                            groupValue: pick,
+                            onChanged: (value) {
+                              setState(() {
+                                pick = value as String?;
+                              });
+                            },
+                          ),
+                          RadioListTile(
+                            title: ShowTitle(
+                                title:
+                                    'ราคา(พิเศษ) = ${productModel.priceSpecial} บาท',
+                                textStyle: MyConstant().h3Style()),
+                            value: productModel.priceSpecial,
+                            groupValue: pick,
+                            onChanged: (value) {
+                              setState(() {
+                                pick = value as String?;
+                              });
+                            },
+                          ),
                         ],
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              if (amountInt != 1) {
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                if (amountInt != 1) {
+                                  setState(() {
+                                    amountInt--;
+                                  });
+                                }
+                              },
+                              icon: Icon(
+                                Icons.remove_circle_outline,
+                                color: MyConstant.dark,
+                              )),
+                          ShowTitle(
+                              title: amountInt.toString(),
+                              textStyle: MyConstant().h1Style()),
+                          IconButton(
+                              onPressed: () {
                                 setState(() {
-                                  amountInt--;
+                                  amountInt++;
                                 });
-                              }
-                            },
-                            icon: Icon(
-                              Icons.remove_circle_outline,
-                              color: MyConstant.dark,
-                            )),
-                        ShowTitle(
-                            title: amountInt.toString(),
-                            textStyle: MyConstant().h1Style()),
-                        IconButton(
-                            onPressed: () {
-                              setState(() {
-                                amountInt++;
-                              });
-                            },
-                            icon: Icon(
-                              Icons.add_circle_outline,
-                              color: MyConstant.dark,
-                            )),
-                      ],
+                              },
+                              icon: Icon(
+                                Icons.add_circle_outline,
+                                color: MyConstant.dark,
+                              )),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -261,23 +301,54 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          Navigator.pop(context);
                           String idStore = userModel!.id;
                           String idProduct = productModel.id;
-                          // Navigator.pop(context);
+                          String name = productModel.nameProduct;
+                          String price = productModel.price;
+                          String proceSpecial = productModel.priceSpecial;
+                          String amount = amountInt.toString();
+                          int sumInt = int.parse(pick!) * amountInt;
+                          String sum = sumInt.toString();
 
                           print(
-                              '### IDStore = $idStore , IDProduct = $idProduct  ###');
+                              '### IDStore = $idStore , IDProduct = $idProduct  , name = $name  price = $price priceSpecial = $proceSpecial amount = $amount pick = $pick sum = $sum');
+
+                          if ((currentIdSeller == idStore) ||
+                              (currentIdSeller == null)) {
+                            SQLiteModel sqLiteModel = SQLiteModel(
+                                idStore: idStore,
+                                idProduct: idProduct,
+                                name: name,
+                                price: price,
+                                proceSpecial: proceSpecial,
+                                amount: amount,
+                                sum: sum);
+                            await SQLiterHelper()
+                                .insertValueToSQLite(sqLiteModel)
+                                .then((value) {
+                              amountInt = 1;
+                              Navigator.pop(context);
+                            });
+                          } else {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            MyDialog().normalDialog(context, 'ร้านผิด ?',
+                                'กรุณาเลือกสินค้าที่ ร้านเดิม ให้เสร็จก่อน เลือกร้านอื่น คะ');
+                          }
                         },
-                        child: ShowTitle(
-                            title: 'ใส่ตระกร้า',
-                            textStyle: MyConstant().h2BlueStyle()),
+                        child: Text(
+                          'Add Cart',
+                          style: MyConstant().h2BlueStyle(),
+                        ),
                       ),
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: ShowTitle(
-                            title: 'ยกเลิก',
-                            textStyle: MyConstant().h2RedStyle()),
+                        child: Text(
+                          'Cancel',
+                          style: MyConstant().h2RedStyle(),
+                        ),
                       ),
                     ],
                   ),
