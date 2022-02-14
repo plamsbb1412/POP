@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/create_account/create_user.dart';
 import 'package:flutter_application_1/states/add_product.dart';
+import 'package:flutter_application_1/states/add_waller.dart';
 import 'package:flutter_application_1/states/edit_profile_seller.dart';
 import 'package:flutter_application_1/states/login.dart';
 import 'package:flutter_application_1/states/saler_service.dart';
@@ -22,6 +23,7 @@ final Map<String, WidgetBuilder> map = {
   '/addProduct': (BuildContext context) => AddProduct(),
   '/editProfileStore': (BuildContext context) => EditProfileStore(),
   '/showCart': (BuildContext context) => ShowCart(),
+  '/addWallet': (BuildContext context) => AddWallet(),
 };
 
 String? initlaRoute;

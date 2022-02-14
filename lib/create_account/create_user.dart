@@ -43,7 +43,7 @@ class _CreateUserState extends State<CreateUser> {
                     MyDialog().normalDialog(
                         context, 'ยังไม่ได้เลือกเพส', 'กรุณาเลือก เพส ของคุณ');
                   } else {
-                    print('Process Sex Type User');
+                    print('pricess Sex Type User');
                     uploadPictureAndInsertData();
                   }
                 }
@@ -107,7 +107,7 @@ class _CreateUserState extends State<CreateUser> {
         print('## สมัครได้นะ ##');
         if (file == null) {
           // no avata
-          processInsertMySQL(
+          pricessInsertMySQL(
             name: name,
             firstname: firstname,
             lastname: lastname,
@@ -131,7 +131,7 @@ class _CreateUserState extends State<CreateUser> {
           FormData data = FormData.fromMap(map);
           await Dio().post(apiSaveAvtar, data: data).then((value) {
             avatar = '/Project/StoreRMUTL/API/avataruser/$nameAvatar';
-            processInsertMySQL();
+            pricessInsertMySQL();
           });
         }
       } else {
@@ -141,7 +141,7 @@ class _CreateUserState extends State<CreateUser> {
     });
   }
 
-  Future<Null> processInsertMySQL({
+  Future<Null> pricessInsertMySQL({
     String? username,
     String? password,
     String? firstname,
@@ -152,7 +152,7 @@ class _CreateUserState extends State<CreateUser> {
     String? phone,
     String typeUser = 'user',
   }) async {
-    print('processMySQL work $avatar');
+    print('pricessMySQL work $avatar');
     String apiInserUset =
         '${MyConstant.domain}/Project/StoreRMUTL/API/insertUser.php?isAdd=true&name=$name&firstName=$firstname&lastName=$lastname&username=$username&password=$password&student_id=$studentID&email=$email&phone=$phone&sex=$sex&type=$typeUser&avater=$avatar';
     await Dio().get(apiInserUset).then((value) {

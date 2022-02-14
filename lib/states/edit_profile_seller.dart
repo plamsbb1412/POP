@@ -72,7 +72,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
           title: Text('Edit Profile Store'),
           actions: [
             IconButton(
-              onPressed: () => processEditProfileSeller(),
+              onPressed: () => pricessEditProfileSeller(),
               icon: Icon(Icons.edit),
             ),
           ],
@@ -105,8 +105,8 @@ class _EditProfileStoreState extends State<EditProfileStore> {
         ));
   }
 
-  Future<Null> processEditProfileSeller() async {
-    print('processEditProfileSeller work');
+  Future<Null> pricessEditProfileSeller() async {
+    print('pricessEditProfileSeller work');
     MyDialog().showProgressDialog(context);
 
     if (formKey.currentState!.validate()) {
@@ -148,7 +148,7 @@ class _EditProfileStoreState extends State<EditProfileStore> {
 
   ElevatedButton buildButtonEditProfile() {
     return ElevatedButton.icon(
-      onPressed: () => processEditProfileSeller(),
+      onPressed: () => pricessEditProfileSeller(),
       icon: Icon(Icons.edit),
       label: Text('แก้ไขข้อมูล'),
     );

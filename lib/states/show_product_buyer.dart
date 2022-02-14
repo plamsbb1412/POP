@@ -30,7 +30,7 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
   int indexImage = 0;
   int amountInt = 1;
   String? pick;
-  String? currentIdSeller;
+  String? currentIdStore;
 
   @override
   void initState() {
@@ -307,22 +307,22 @@ class _ShowProductBuyerState extends State<ShowProductBuyer> {
                           String idProduct = productModel.id;
                           String name = productModel.nameProduct;
                           String price = productModel.price;
-                          String proceSpecial = productModel.priceSpecial;
+                          String priceSpecial = productModel.priceSpecial;
                           String amount = amountInt.toString();
                           int sumInt = int.parse(pick!) * amountInt;
                           String sum = sumInt.toString();
 
                           print(
-                              '### IDStore = $idStore , IDProduct = $idProduct  , name = $name  price = $price priceSpecial = $proceSpecial amount = $amount pick = $pick sum = $sum');
+                              '### IDStore = $idStore , IDProduct = $idProduct  , name = $name  price = $price priceSpecial = $priceSpecial amount = $amount sum = $sum');
 
-                          if ((currentIdSeller == idStore) ||
-                              (currentIdSeller == null)) {
+                          if ((currentIdStore == idStore) ||
+                              (currentIdStore == null)) {
                             SQLiteModel sqLiteModel = SQLiteModel(
                                 idStore: idStore,
                                 idProduct: idProduct,
                                 name: name,
                                 price: price,
-                                proceSpecial: proceSpecial,
+                                priceSpecial: priceSpecial,
                                 amount: amount,
                                 sum: sum);
                             await SQLiterHelper()

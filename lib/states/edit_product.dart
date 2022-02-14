@@ -63,7 +63,7 @@ class _EditProductState extends State<EditProduct> {
           title: Text('Edit Product'),
           actions: [
             IconButton(
-              onPressed: () => processEdit(),
+              onPressed: () => pricessEdit(),
               icon: Icon(Icons.edit),
               tooltip: 'Edit Product',
             ),
@@ -105,7 +105,7 @@ class _EditProductState extends State<EditProduct> {
         margin: EdgeInsets.only(top: 16),
         width: constraints.maxWidth,
         child: ElevatedButton.icon(
-            onPressed: () => processEdit(),
+            onPressed: () => pricessEdit(),
             icon: Icon(Icons.edit),
             label: Text('Edit Product')));
   }
@@ -247,7 +247,7 @@ class _EditProductState extends State<EditProduct> {
     );
   }
 
-  Future<Null> processEdit() async {
+  Future<Null> pricessEdit() async {
     if (formKey.currentState!.validate()) {
       MyDialog().showProgressDialog(context);
 

@@ -6,7 +6,7 @@ class SQLiteModel {
   final String idProduct;
   final String name;
   final String price;
-  final String proceSpecial;
+  final String priceSpecial;
   final String amount;
   final String sum;
   SQLiteModel({
@@ -15,7 +15,7 @@ class SQLiteModel {
     required this.idProduct,
     required this.name,
     required this.price,
-    required this.proceSpecial,
+    required this.priceSpecial,
     required this.amount,
     required this.sum,
   });
@@ -26,7 +26,7 @@ class SQLiteModel {
     String? idProduct,
     String? name,
     String? price,
-    String? proceSpecial,
+    String? priceSpecial,
     String? amount,
     String? sum,
   }) {
@@ -36,7 +36,7 @@ class SQLiteModel {
       idProduct: idProduct ?? this.idProduct,
       name: name ?? this.name,
       price: price ?? this.price,
-      proceSpecial: proceSpecial ?? this.proceSpecial,
+      priceSpecial: priceSpecial ?? this.priceSpecial,
       amount: amount ?? this.amount,
       sum: sum ?? this.sum,
     );
@@ -49,7 +49,7 @@ class SQLiteModel {
       'idProduct': idProduct,
       'name': name,
       'price': price,
-      'proceSpecial': proceSpecial,
+      'priceSpecial': priceSpecial,
       'amount': amount,
       'sum': sum,
     };
@@ -62,7 +62,7 @@ class SQLiteModel {
       idProduct: map['idProduct'] ?? '',
       name: map['name'] ?? '',
       price: map['price'] ?? '',
-      proceSpecial: map['proceSpecial'] ?? '',
+      priceSpecial: map['priceSpecial'] ?? '',
       amount: map['amount'] ?? '',
       sum: map['sum'] ?? '',
     );
@@ -75,7 +75,7 @@ class SQLiteModel {
 
   @override
   String toString() {
-    return 'SQLiteModel(id: $id, idStore: $idStore, idProduct: $idProduct, name: $name, price: $price, proceSpecial: $proceSpecial, amount: $amount, sum: $sum)';
+    return 'SQLiteModel(id: $id, idStore: $idStore, idProduct: $idProduct, name: $name, price: $price, priceSpecial: $priceSpecial, amount: $amount, sum: $sum)';
   }
 
   @override
@@ -88,7 +88,7 @@ class SQLiteModel {
         other.idProduct == idProduct &&
         other.name == name &&
         other.price == price &&
-        other.proceSpecial == proceSpecial &&
+        other.priceSpecial == priceSpecial &&
         other.amount == amount &&
         other.sum == sum;
   }
@@ -100,7 +100,7 @@ class SQLiteModel {
         idProduct.hashCode ^
         name.hashCode ^
         price.hashCode ^
-        proceSpecial.hashCode ^
+        priceSpecial.hashCode ^
         amount.hashCode ^
         sum.hashCode;
   }

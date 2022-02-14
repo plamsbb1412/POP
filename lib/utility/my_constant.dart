@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'POT App';
-  static String domain = 'https://f962-49-231-193-59.ngrok.io';
+  static String domain = 'https://492b-171-4-216-91.ngrok.io';
   static String Location = '';
   // Route
   static String routeLogin = '/login';
@@ -17,6 +17,7 @@ class MyConstant {
   static String routeAddProduct = '/addProduct';
   static String routeEditProfileStore = '/editProfileStore';
   static String routeShowCart = '/showCart';
+  static String routeAddwallet = '/addWallet';
 
   // image
   static String imageLogo = 'images/logoApp.png';
@@ -84,6 +85,19 @@ class MyConstant {
         primary: MyConstant.primary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
+        ),
+      );
+
+  //Background
+  BoxDecoration planBackground() => BoxDecoration(
+        color: MyConstant.light.withOpacity(0.75),
+      );
+
+  BoxDecoration gradintLinearBackground() => BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Colors.white, MyConstant.light, MyConstant.primary],
         ),
       );
 }

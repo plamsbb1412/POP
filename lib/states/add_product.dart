@@ -45,7 +45,7 @@ class _AddProductState extends State<AddProduct> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () => processAddProduct(),
+              onPressed: () => pricessAddProduct(),
               icon: Icon(Icons.cloud_upload))
         ],
         title: Text('Add Product'),
@@ -81,14 +81,14 @@ class _AddProductState extends State<AddProduct> {
       child: ElevatedButton(
         style: MyConstant().myButtonStyle(),
         onPressed: () {
-          processAddProduct();
+          pricessAddProduct();
         },
         child: Text('Add Product'),
       ),
     );
   }
 
-  Future<Null> processAddProduct() async {
+  Future<Null> pricessAddProduct() async {
     if (formKey.currentState!.validate()) {
       bool checkFile = true;
       for (var item in files) {
@@ -149,7 +149,7 @@ class _AddProductState extends State<AddProduct> {
     }
   }
 
-  Future<Null> processImagePicker(ImageSource source, int index) async {
+  Future<Null> pricessImagePicker(ImageSource source, int index) async {
     try {
       var result = await ImagePicker().getImage(
         source: source,
@@ -185,14 +185,14 @@ class _AddProductState extends State<AddProduct> {
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  processImagePicker(ImageSource.camera, index);
+                  pricessImagePicker(ImageSource.camera, index);
                 },
                 child: Text('Camera'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  processImagePicker(ImageSource.gallery, index);
+                  pricessImagePicker(ImageSource.gallery, index);
                 },
                 child: Text('Gallery'),
               ),
