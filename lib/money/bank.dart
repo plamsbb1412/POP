@@ -17,8 +17,31 @@ class _BankState extends State<Bank> {
       body: Column(
         children: [
           buildTitle(),
-          ListTile(
-            leading: SvgPicture.asset('images/kbank.svg'),
+          buildKbank(),
+        ],
+      ),
+    );
+  }
+
+  Widget buildKbank() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      height: 150,
+      child: Center(
+        child: Card(
+          color: Colors.green.shade100,
+          child: ListTile(
+            leading: Container(
+              width: 90,
+              height: 90,
+              decoration: BoxDecoration(
+                  color: Colors.green.shade700,
+                  borderRadius: BorderRadius.circular(15)),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SvgPicture.asset('images/kbank.svg'),
+              ),
+            ),
             title: ShowTitle(
               title: 'ธนาคากสิกร ',
               textStyle: MyConstant().h2Style(),
@@ -27,8 +50,8 @@ class _BankState extends State<Bank> {
               title: 'ชื่อบัญชี เฉลิมชัย วรรณพันธ์ เลขบัญชี 029-1-15696-7',
               textStyle: MyConstant().h3Style(),
             ),
-          )
-        ],
+          ),
+        ),
       ),
     );
   }
