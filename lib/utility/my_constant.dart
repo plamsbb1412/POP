@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'POT App';
-  static String domain = 'https://9a38-171-4-233-150.ngrok.io';
-  static String Location = '';
+  static String domain = 'https://b373-171-4-233-150.ngrok.io';
   static String urlPrompay = 'https://promptpay.io/0876586332.png';
+  static String publicKey = 'pkey_test_5okvg05okkpuye2qehc';
   // Route
   static String routeLogin = '/login';
   static String routeUserService = '/userService';
@@ -19,6 +19,7 @@ class MyConstant {
   static String routeEditProfileStore = '/editProfileStore';
   static String routeShowCart = '/showCart';
   static String routeAddwallet = '/addWallet';
+  static String routeConfrimAddwallet = '/confrimaddWallet';
 
   // image
   static String imageLogo = 'images/logoApp.png';
