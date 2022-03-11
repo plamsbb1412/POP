@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MaterialColor materialColor =
-        MaterialColor(0xff8d5c35, MyConstant.mapMaterialColor);
+        MaterialColor(0xff3a5157, MyConstant.mapMaterialColor);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: MyConstant.appName,

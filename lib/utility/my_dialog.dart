@@ -44,21 +44,30 @@ class MyDialog {
     );
   }
 
-  Future<void> actionDialog(
+  Future<Null> actionDialog(
     BuildContext context,
     String title,
     String message,
   ) async {
     showDialog(
       context: context,
-      builder: (context) => SimpleDialog(
+      builder: (context) => AlertDialog(
         title: ListTile(
           leading: ShowImage(path: MyConstant.imageLogo),
           title: ShowTitle(title: title, textStyle: MyConstant().h2Style()),
           subtitle:
               ShowTitle(title: message, textStyle: MyConstant().h3Style()),
         ),
-        children: [TextButton(onPressed: funcAction, child: Text('OK'))],
+        actions: [
+          TextButton(
+            onPressed: funcAction,
+            child: Text('OK'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+        ],
       ),
     );
   }

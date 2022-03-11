@@ -31,15 +31,18 @@ class _LoginState extends State<Login> {
         behavior: HitTestBehavior.opaque,
         child: Form(
           key: formKey,
-          child: ListView(
-            children: [
-              buildImage(size),
-              buildAppName(),
-              buildUser(size),
-              buildPassword(size),
-              buildLogin(size),
-              buildCreateAccount(),
-            ],
+          child: Container(
+            decoration: MyConstant().planBackground(),
+            child: ListView(
+              children: [
+                buildImage(size),
+                buildAppName(),
+                buildUser(size),
+                buildPassword(size),
+                buildLogin(size),
+                buildCreateAccount(),
+              ],
+            ),
           ),
         ),
       ),

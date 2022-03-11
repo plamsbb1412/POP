@@ -8,8 +8,7 @@ class NavConfirmAddWallet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      height: 100,
+      width: 80,
       child: InkWell(
         onTap: () => Navigator.pushNamedAndRemoveUntil(
             context, MyConstant.routeConfrimAddwallet, (route) => false),
@@ -20,7 +19,7 @@ class NavConfirmAddWallet extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Image.asset('/images/bill.png'),
+                Image.asset('images/bill.png'),
                 ShowTitle(title: 'ส่งสลิป')
               ],
             ),
