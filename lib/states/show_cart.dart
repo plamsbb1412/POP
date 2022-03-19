@@ -4,12 +4,15 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/sqlite_model.dart';
 import 'package:flutter_application_1/models/user_model.dart';
+import 'package:flutter_application_1/models/wallet_model.dart';
 import 'package:flutter_application_1/utility/my_constant.dart';
+import 'package:flutter_application_1/utility/my_dialog.dart';
 import 'package:flutter_application_1/utility/sqliteHelper.dart';
 import 'package:flutter_application_1/widgets/show_image.dart';
 import 'package:flutter_application_1/widgets/show_no_data.dart';
 import 'package:flutter_application_1/widgets/show_progress.dart';
 import 'package:flutter_application_1/widgets/show_title.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ShowCart extends StatefulWidget {
   const ShowCart({Key? key}) : super(key: key);
@@ -142,16 +145,59 @@ class _ShowCartState extends State<ShowCart> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, MyConstant.routeAddwallet);
+          onPressed: () async {
+            MyDialog().showProgressDialog(context);
+
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            String idBuyer = preferences.getString('id')!;
+
+            var path =
+                '${MyConstant.domain}/Project/StoreRMUTL/API/getWalletWhereidUser.php?isAdd=true&idUser=$idBuyer';
+            await Dio().get(path).then((value) {
+              Navigator.pop(context);
+              print('#### value == $value');
+              if (value.toString() == 'null') {
+                print('#### action Alert add Wallet');
+                MyDialog(
+                  funcAction: () {
+                    Navigator.pop(context);
+                    Navigator.pushNamed(context, MyConstant.routeAddwallet);
+                  },
+                ).actionDialog(context, 'No Wallet', 'Please Add Waller');
+              } else {
+                print('#12feb check Wallet can Payment');
+
+                int approveWallet = 0;
+                for (var item in json.decode(value.data)) {
+                  WalletModel walletModel = WalletModel.fromMap(item);
+                  if (walletModel.status == 'Approve') {
+                    approveWallet =
+                        approveWallet + int.parse(walletModel.money.trim());
+                  }
+                }
+                print('#12feb approveWallet ==> $approveWallet');
+                if (approveWallet - total! >= 0) {
+                  print('#12feb Can Order');
+                  MyDialog(funcAction: orderFunc).actionDialog(
+                      context,
+                      'Confirm Order ?',
+                      'Order Total : $total thb \n Please Confirm Order');
+                } else {
+                  print('#12feb Cannot Order');
+                  MyDialog().normalDialog(context, 'Cannot Order ?',
+                      'จำนวนเงินที่มี : $approveWallet thb \n ราคา : $total thb \n จำนวนเงิน ไม่พอจ่าย คุณรอให้ Admin ทำการตรวจสอบก่อนหรือ Add Wallet เข้ามา');
+                }
+              }
+            });
           },
-          child: Text('ซื้อ'),
+          child: Text('Order'),
         ),
         Container(
           margin: EdgeInsets.only(left: 4, right: 8),
           child: ElevatedButton(
             onPressed: () => confirmEmptyCart(),
-            child: Text('ยกเลิก'),
+            child: Text('Empty Cart'),
           ),
         ),
       ],
@@ -331,5 +377,10 @@ class _ShowCartState extends State<ShowCart> {
         ],
       ),
     );
+  }
+
+  Future<void> orderFunc() async {
+    Navigator.pop(context);
+    print('orderFucn work');
   }
 }

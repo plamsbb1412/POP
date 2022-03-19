@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/create_account/create_user.dart';
 import 'package:flutter_application_1/states/add_product.dart';
@@ -31,6 +33,7 @@ final Map<String, WidgetBuilder> map = {
 String? initlaRoute;
 
 Future<Null> main() async {
+  HttpOverrides.global = MyHttpOverride();
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   String? type = preferences.getString('type');
@@ -67,5 +70,14 @@ class MyApp extends StatelessWidget {
       initialRoute: initlaRoute,
       theme: ThemeData(primarySwatch: materialColor),
     );
+  }
+}
+
+class MyHttpOverride extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    // TODO: implement createHttpClient
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (cert, host, port) => true;
   }
 }
