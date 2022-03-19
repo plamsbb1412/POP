@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MyConstant {
   // Genernal
   static String appName = 'ไข่น้อย';
-  static String domain = 'https://57d1-171-4-218-68.ngrok.io';
+  static String domain = 'https://4af7-171-4-222-44.ngrok.io';
   static String urlPrompay = 'https://promptpay.io/0876586332.png';
   static String publicKey = 'pkey_test_5okvg05okkpuye2qehc';
   // Route
